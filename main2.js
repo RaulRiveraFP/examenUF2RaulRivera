@@ -1,4 +1,4 @@
-console.log('conciertos');
+console.log('conciertos')
 const conciertosRecientes = [
   {
     id: 11,
@@ -100,22 +100,71 @@ const conciertosRecientes = [
     },
     precioEntrada: 65
   }
-];
+]
 
+function pintaConciertos(datos){
+    let tabla = document.querySelector('tbody')
+    let html = ''
 
+    datos.forEach(dato => {
+      html +=
+      `
+      <tr>
+      <td>${dato.nombreGrupo}</td>
+      <td>${dato.fecha}</td>
+      <td>${dato.lugar.ciudad}</td>
+      <td>${dato.lugar.pais}</td>
+      <td>${dato.precioEntrada} €</td>
+      </tr>
+      `
+    })
+    tabla.innerHTML = html
+}
 
-// pintaConciertos()
+pintaConciertos(conciertosRecientes)
 
+function buscaConcierto(datos, id) {
+  const conciertoEncontrado = datos.find(concierto => concierto.id === id)
 
+  if (conciertoEncontrado) {
+      const divResultado = document.createElement('div')
+
+      const parrafo1 = document.createElement('p')
+      parrafo1.textContent = `Nombre del grupo: ${conciertoEncontrado.nombreGrupo}`
+
+      const parrafo2 = document.createElement('p')
+      parrafo2.textContent = `Fecha: ${conciertoEncontrado.fecha}`
+
+      const parrafo3 = document.createElement('p')
+      parrafo3.textContent = `Ciudad: ${conciertoEncontrado.lugar.ciudad}`
+
+      const parrafo4 = document.createElement('p')
+      parrafo4.textContent = `Precio de entrada: ${conciertoEncontrado.precioEntrada} €`
+
+      divResultado.appendChild(parrafo1)
+      divResultado.appendChild(parrafo2)
+      divResultado.appendChild(parrafo3)
+      divResultado.appendChild(parrafo4)
+
+      return divResultado
+  } else {
+      return `No tengo información de conciertos para el ID ${id}`
+  }
+}
 
 // console.log(buscaConcierto(conciertosRecientes, 14))
-// document.querySelector('#infoConciertoId').innerHTML = buscaConcierto(conciertosRecientes, 14);
+document.querySelector('#infoConciertoId').appendChild(buscaConcierto(conciertosRecientes, 14))
+
+function filtraConciertos(datos, ciudad){
+  const arrayFiltrado = datos.filter(dato => dato.lugar.ciudad.includes(ciudad))
+  return arrayFiltrado
+}
 
 
-
-// document.querySelector('#filtrar').addEventListener('click', (e) => {
-//   const ciudad = document.querySelector('#ciudad').value;
-//   const info = filtraConciertos(conciertosRecientes, ciudad) 
-//   pintaConciertos(info)
-//   console.log('ciudad y datos concierto: ', ciudad, info);
-// });
+document.querySelector('#filtrar').addEventListener('click', (e) => {
+   const ciudad = document.querySelector('#ciudad').value
+   const info = filtraConciertos(conciertosRecientes, ciudad)
+  //  console.log('infooo',info);
+   pintaConciertos(info)
+   console.log('ciudad y datos concierto: ', ciudad, info)
+})
