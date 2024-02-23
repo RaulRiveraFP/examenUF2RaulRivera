@@ -105,7 +105,9 @@ const conciertosRecientes = [
 function pintaConciertos(datos){
     let tabla = document.querySelector('tbody')
     let html = ''
-
+    if(datos.length == 0){
+      html = 'No hay datos'
+    }else{
     datos.forEach(dato => {
       html +=
       `
@@ -118,7 +120,9 @@ function pintaConciertos(datos){
       </tr>
       `
     })
-    tabla.innerHTML = html
+  }
+  tabla.innerHTML = html
+
 }
 
 pintaConciertos(conciertosRecientes)
@@ -146,14 +150,14 @@ function buscaConcierto(datos, id) {
       divResultado.appendChild(parrafo3)
       divResultado.appendChild(parrafo4)
 
-      return divResultado
+      return divResultado.innerHTML
   } else {
       return `No tengo información de conciertos para el ID ${id}`
   }
 }
 
-// console.log(buscaConcierto(conciertosRecientes, 14))
-document.querySelector('#infoConciertoId').appendChild(buscaConcierto(conciertosRecientes, 14))
+console.log(buscaConcierto(conciertosRecientes,44))
+document.querySelector('#infoConciertoId').innerHTML = (buscaConcierto(conciertosRecientes, 44))
 
 function filtraConciertos(datos, ciudad){
   const arrayFiltrado = datos.filter(dato => dato.lugar.ciudad.includes(ciudad))
@@ -164,7 +168,7 @@ function filtraConciertos(datos, ciudad){
 document.querySelector('#filtrar').addEventListener('click', (e) => {
    const ciudad = document.querySelector('#ciudad').value
    const info = filtraConciertos(conciertosRecientes, ciudad)
-  //  console.log('infooo',info);
+  console.log('infooo',info);
    pintaConciertos(info)
    console.log('ciudad y datos concierto: ', ciudad, info)
 })
